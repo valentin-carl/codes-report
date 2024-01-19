@@ -1,0 +1,66 @@
+\documentclass[conference,10pt,letterpaper]{IEEEtran}
+
+% Dokumentation IEEEtran LaTeX class
+% https://ras.papercept.net/conferences/support/files/IEEEtran_HOWTO.pdf
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{balance}
+\usepackage{float}
+\usepackage[all]{nowidow}
+
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalise]{cleveref}
+
+\begin{document}
+
+\title{Project Report—CoDes: Co-Design of Serverless Platforms and Applications}
+
+\author{
+    \IEEEauthorblockN{
+        Valentin Carl\IEEEauthorrefmark{1},
+        Daniel Gottschling\IEEEauthorrefmark{2},
+        Jonas Heisterberg\IEEEauthorrefmark{3},
+        David Schmidt\IEEEauthorrefmark{4}, and
+        Marvin Steinke\IEEEauthorrefmark{5}
+    }
+    \IEEEauthorblockA{
+        Technische Universit\"at Berlin\\
+        Email:
+        \IEEEauthorrefmark{1}carl@tu-berlin.de,
+        \IEEEauthorrefmark{2}d.gottschling@campus.tu-berlin.de,
+        \IEEEauthorrefmark{3}heisterberg@campus.tu-berlin.de,\\
+        \IEEEauthorrefmark{4}d.schmidt@campus.tu-berlin.de,
+        \IEEEauthorrefmark{5}marvin.steinke@campus.tu-berlin.de
+    }
+}
+
+\maketitle
+\thispagestyle{plain}
+\pagestyle{plain}
+
+\begin{abstract}
+    Wow, what an abstract!
+\end{abstract}
+
+%\tableofcontents
+
+\input{sections/1_introduction}
+\input{sections/2_background}
+\input{sections/3_fusionize}
+\input{sections/4_sand}
+\input{sections/5_profaastinate}
+\input{sections/6_evaluation}
+\input{sections/7_discussion}
+\input{sections/8_conclusion}
+
+\balance
+
+\bibliographystyle{IEEEtran}
+\bibliography{bibliography}
+
+\end{document}

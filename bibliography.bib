@@ -1,0 +1,38 @@
+@misc{schirmer2023fusionize,
+    title={Fusionize++: Improving Serverless Application Performance Using Dynamic Task Inlining and Infrastructure Optimization}, 
+    author={Trever Schirmer and Joel Scheuner and Tobias Pfandzelter and David Bermbach},
+    year={2023},
+    eprint={2311.04875},
+    archivePrefix={arXiv},
+    primaryClass={cs.DC}
+}
+
+@inproceedings {akkus2018sand,
+    author = {Istemi Ekin Akkus and Ruichuan Chen and Ivica Rimac and Manuel Stein and Klaus Satzke and Andre Beck and Paarijaat Aditya and Volker Hilt},
+    title = {{SAND}: Towards {High-Performance} Serverless Computing},
+    booktitle = {2018 USENIX Annual Technical Conference (USENIX ATC 18)},
+    year = {2018},
+    isbn = {978-1-939133-01-4},
+    address = {Boston, MA},
+    pages = {923--935},
+    url = {https://www.usenix.org/conference/atc18/presentation/akkus},
+    publisher = {USENIX Association},
+    month = jul
+}
+
+@inproceedings{schirmer2023profaastinate, 
+    author = {Schirmer, Trever and Carl, Valentin and Pfandzelter, Tobias and Bermbach, David}, 
+    title = {ProFaaStinate: Delaying Serverless Function Calls to Optimize Platform Performance}, 
+    year = {2023}, 
+    isbn = {9798400704550}, 
+    publisher = {Association for Computing Machinery}, 
+    address = {New York, NY, USA}, 
+    url = {https://doi.org/10.1145/3631295.3631393}, 
+    doi = {10.1145/3631295.3631393}, 
+    abstract = {Function-as-a-Service (FaaS) enables developers to run serverless applications without managing operational tasks. In current FaaS platforms, both synchronous and asynchronous calls are executed immediately. In this paper, we present ProFaaStinate, which extends serverless platforms to enable delayed execution of asynchronous function calls. This allows platforms to execute calls at convenient times with higher resource availability or lower load. ProFaaStinate is able to optimize performance without requiring deep integration into the rest of the platform, or a complex systems model. In our evaluation, our prototype built on top of Nuclio can reduce request response latency and workflow duration while also preventing the system from being overloaded during load peaks. Using a document preparation use case, we show a 54\% reduction in average request response latency. This reduction in resource usage benefits both platforms and users as cost savings.}, 
+    booktitle = {Proceedings of the 9th International Workshop on Serverless Computing},
+    pages = {1–6}, 
+    numpages = {6}, 
+    keywords = {Serverless, Platform Co-Design, Function-as-a-Service, Application}, location = {, Bologna, Italy, }, 
+    series = {WoSC '23} 
+}
