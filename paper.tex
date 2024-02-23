@@ -1,9 +1,12 @@
-\documentclass[conference,10pt,letterpaper]{IEEEtran}
+\documentclass[a4paper, twoside]{IEEEtran}
+\IEEEoverridecommandlockouts
 
 % Dokumentation IEEEtran LaTeX class
 % https://ras.papercept.net/conferences/support/files/IEEEtran_HOWTO.pdf
 
-\usepackage{cite}
+\usepackage{csquotes}
+\usepackage[english]{babel}
+\usepackage[noadjust]{cite}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
 \usepackage{graphicx}
@@ -14,7 +17,12 @@
 \usepackage[all]{nowidow}
 
 \usepackage[hidelinks]{hyperref}
+\usepackage{url}
 \usepackage[capitalise]{cleveref}
+
+% group citations
+\renewcommand{\citepunct}{,\penalty\citepunctpenalty\,}
+\renewcommand{\citedash}{--}
 
 \begin{document}
 
@@ -27,10 +35,10 @@
         Jonas Heisterberg\IEEEauthorrefmark{2},
         David Schmidt\IEEEauthorrefmark{2}, and
         Marvin Steinke\IEEEauthorrefmark{1}
-    }
+    }\\
     \IEEEauthorblockA{
-        Technische Universit\"at Berlin\\
-        Email: 
+        Technische Universität Berlin\\
+        Email:
         \IEEEauthorrefmark{1}\{carl, marvin.steinke\}@tu-berlin.de,
         \IEEEauthorrefmark{2}\{d.gottschling, heisterberg, d.schmidt\}@campus.tu-berlin.de
     }
