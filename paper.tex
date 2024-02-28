@@ -15,10 +15,22 @@
 \usepackage{balance}
 \usepackage{float}
 \usepackage[all]{nowidow}
-
+\usepackage{listings}
 \usepackage[hidelinks]{hyperref}
 \usepackage{url}
 \usepackage[capitalise]{cleveref}
+
+\lstdefinestyle{python}{
+    language=Python,
+    escapechar=!,
+    captionpos=b,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{gray},
+    breaklines=true
+}
+
 
 % group citations
 \renewcommand{\citepunct}{,\penalty\citepunctpenalty\,}
@@ -63,7 +75,7 @@
 \input{sections/7_discussion}
 \input{sections/8_conclusion}
 
-\balance
+%\balance
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibliography}
