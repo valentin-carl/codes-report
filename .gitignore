@@ -9,4 +9,8 @@
 *.out
 *.synctex.gz
 *.toc
+# Ignore all PDFs
 *.pdf
+# Exclude files in figures/
+!figures/*.pdf
+
