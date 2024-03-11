@@ -1,5 +1,5 @@
 @misc{schirmer2023fusionize,
-    title={Fusionize++: Improving Serverless Application Performance Using Dynamic Task Inlining and Infrastructure Optimization}, 
+    title={Fusionize++: Improving Serverless Application Performance Using Dynamic Task Inlining and Infrastructure Optimization},
     author={Trever Schirmer and Joel Scheuner and Tobias Pfandzelter and David Bermbach},
     year={2023},
     eprint={2311.04875},
@@ -20,19 +20,112 @@
     month = jul
 }
 
-@inproceedings{schirmer2023profaastinate, 
-    author = {Schirmer, Trever and Carl, Valentin and Pfandzelter, Tobias and Bermbach, David}, 
-    title = {ProFaaStinate: Delaying Serverless Function Calls to Optimize Platform Performance}, 
-    year = {2023}, 
-    isbn = {9798400704550}, 
-    publisher = {Association for Computing Machinery}, 
-    address = {New York, NY, USA}, 
-    url = {https://doi.org/10.1145/3631295.3631393}, 
-    doi = {10.1145/3631295.3631393}, 
-    abstract = {Function-as-a-Service (FaaS) enables developers to run serverless applications without managing operational tasks. In current FaaS platforms, both synchronous and asynchronous calls are executed immediately. In this paper, we present ProFaaStinate, which extends serverless platforms to enable delayed execution of asynchronous function calls. This allows platforms to execute calls at convenient times with higher resource availability or lower load. ProFaaStinate is able to optimize performance without requiring deep integration into the rest of the platform, or a complex systems model. In our evaluation, our prototype built on top of Nuclio can reduce request response latency and workflow duration while also preventing the system from being overloaded during load peaks. Using a document preparation use case, we show a 54\% reduction in average request response latency. This reduction in resource usage benefits both platforms and users as cost savings.}, 
+@inproceedings{schirmer2023profaastinate,
+    author = {Schirmer, Trever and Carl, Valentin and Pfandzelter, Tobias and Bermbach, David},
+    title = {ProFaaStinate: Delaying Serverless Function Calls to Optimize Platform Performance},
+    year = {2023},
+    isbn = {9798400704550},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    url = {https://doi.org/10.1145/3631295.3631393},
+    doi = {10.1145/3631295.3631393},
+    abstract = {Function-as-a-Service (FaaS) enables developers to run serverless applications without managing operational tasks. In current FaaS platforms, both synchronous and asynchronous calls are executed immediately. In this paper, we present ProFaaStinate, which extends serverless platforms to enable delayed execution of asynchronous function calls. This allows platforms to execute calls at convenient times with higher resource availability or lower load. ProFaaStinate is able to optimize performance without requiring deep integration into the rest of the platform, or a complex systems model. In our evaluation, our prototype built on top of Nuclio can reduce request response latency and workflow duration while also preventing the system from being overloaded during load peaks. Using a document preparation use case, we show a 54\% reduction in average request response latency. This reduction in resource usage benefits both platforms and users as cost savings.},
     booktitle = {Proceedings of the 9th International Workshop on Serverless Computing},
-    pages = {1–6}, 
-    numpages = {6}, 
-    keywords = {Serverless, Platform Co-Design, Function-as-a-Service, Application}, location = {, Bologna, Italy, }, 
-    series = {WoSC '23} 
+    pages = {1–6},
+    numpages = {6},
+    keywords = {Serverless, Platform Co-Design, Function-as-a-Service, Application}, location = {, Bologna, Italy, },
+    series = {WoSC '23}
 }
+
+@inproceedings{bermbach2020using,
+  title={Using application knowledge to reduce cold starts in FaaS services},
+  author={Bermbach, David and Karakaya, Ahmet-Serdar and Buchholz, Simon},
+  booktitle={Proceedings of the 35th annual ACM symposium on applied computing},
+  pages={134--143},
+  year={2020}
+}
+
+@inproceedings{hendrickson2016serverless,
+  title={Serverless computation with $\{$OpenLambda$\}$},
+  author={Hendrickson, Scott and Sturdevant, Stephen and Harter, Tyler and Venkataramani, Venkateshwaran and Arpaci-Dusseau, Andrea C and Arpaci-Dusseau, Remzi H},
+  booktitle={8th USENIX Workshop on Hot Topics in Cloud Computing (HotCloud 16)},
+  year={2016}
+}
+
+@inproceedings{bermbach2021future,
+  title={On the future of cloud engineering},
+  author={Bermbach, David and Chandra, Abhishek and Krintz, Chandra and Gokhale, Aniruddha and Slominski, Aleksander and Thamsen, Lauritz and Cavalcante, Everton and Guo, Tian and Brandic, Ivona and Wolski, Rich},
+  booktitle={2021 IEEE International conference on cloud engineering (IC2E)},
+  pages={264--275},
+  year={2021},
+  organization={IEEE}
+}
+
+@article{eismann2020serverless,
+  title={Serverless applications: Why, when, and how?},
+  author={Eismann, Simon and Scheuner, Joel and Van Eyk, Erwin and Schwinger, Maximilian and Grohmann, Johannes and Herbst, Nikolas and Abad, Cristina L and Iosup, Alexandru},
+  journal={IEEE Software},
+  volume={38},
+  number={1},
+  pages={32--39},
+  year={2020},
+  publisher={IEEE}
+}
+
+@article{eismann2020review,
+  title={A review of serverless use cases and their characteristics},
+  author={Eismann, Simon and Scheuner, Joel and Van Eyk, Erwin and Schwinger, Maximilian and Grohmann, Johannes and Herbst, Nikolas and Abad, Cristina and Iosup, Alexandru},
+  journal={arXiv preprint arXiv:2008.11110},
+  year={2020}
+}
+
+@inproceedings{spillner2018faaster,
+  title={Faaster, better, cheaper: The prospect of serverless scientific computing and hpc},
+  author={Spillner, Josef and Mateos, Cristian and Monge, David A},
+  booktitle={High Performance Computing: 4th Latin American Conference, CARLA 2017, Buenos Aires, Argentina, and Colonia del Sacramento, Uruguay, September 20-22, 2017, Revised Selected Papers 4},
+  pages={154--168},
+  year={2018},
+  organization={Springer}
+}
+
+@inproceedings{chard2020funcx,
+  title={Funcx: A federated function serving fabric for science},
+  author={Chard, Ryan and Babuji, Yadu and Li, Zhuozhao and Skluzacek, Tyler and Woodard, Anna and Blaiszik, Ben and Foster, Ian and Chard, Kyle},
+  booktitle={Proceedings of the 29th International symposium on high-performance parallel and distributed computing},
+  pages={65--76},
+  year={2020}
+}
+
+@inproceedings{baldini2017serverless,
+  title={The serverless trilemma: Function composition for serverless computing},
+  author={Baldini, Ioana and Cheng, Perry and Fink, Stephen J and Mitchell, Nick and Muthusamy, Vinod and Rabbah, Rodric and Suter, Philippe and Tardieu, Olivier},
+  booktitle={Proceedings of the 2017 ACM SIGPLAN International Symposium on New Ideas, New Paradigms, and Reflections on Programming and Software},
+  pages={89--103},
+  year={2017}
+}
+
+@inproceedings{daw2020xanadu,
+  title={Xanadu: Mitigating cascading cold starts in serverless function chain deployments},
+  author={Daw, Nilanjan and Bellur, Umesh and Kulkarni, Purushottam},
+  booktitle={Proceedings of the 21st International Middleware Conference},
+  pages={356--370},
+  year={2020}
+}
+
+@inproceedings{jia2021nightcore,
+  title={Nightcore: efficient and scalable serverless computing for latency-sensitive, interactive microservices},
+  author={Jia, Zhipeng and Witchel, Emmett},
+  booktitle={Proceedings of the 26th ACM International Conference on Architectural Support for Programming Languages and Operating Systems},
+  pages={152--166},
+  year={2021}
+}
+
+@inproceedings{qi2022spright,
+  title={SPRIGHT: extracting the server from serverless computing! high-performance eBPF-based event-driven, shared-memory processing},
+  author={Qi, Shixiong and Monis, Leslie and Zeng, Ziteng and Wang, Ian-chin and Ramakrishnan, KK},
+  booktitle={Proceedings of the ACM SIGCOMM 2022 Conference},
+  pages={780--794},
+  year={2022}
+}
+
+
