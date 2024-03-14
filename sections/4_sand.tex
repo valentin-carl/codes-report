@@ -1,3 +1,40 @@
 \section{SAND}\label{sec:SAND}
 
+In this section, the earlier mentioned paper \textsc{sand} is examined in more detail, providing a more detailed examination of its concepts and their implementation in Nuclio.
+
+\subsection{Concept}
+\textsc{Sand}, authored by Akkus et al. \cite{akkus2018sand} addresses similar limitations of conventional FaaS platforms as \textsc{Fusionize}, such as cascading 
+cold starts or the overhead in remote function invocations, but offers a different approach to tackle these problems. Through the introduction of two pivotal 
+techniques - application sandboxing and hierarchical message queuing, the serverless computing system \textsc{sand} presented in the paper is able to achieve superior 
+performance in terms of lower latencies and enhanced resource efficiency compared to other serverless platforms.
+
+\subsubsection{Application Sandboxing}
+Contrary to the common practice of isolating each function within a container in serverless computing, \textsc{sand} implements 
+isolation between applications. Viewing an application as a sequence of multiple serverless functions, in \textsc{sand} all functions of an application 
+share a container, causing a weaker barrier between functions of the same application and reducing the occurrence of cold starts.
+
+\subsubsection{Hierarchical Message Queuing}
+Another measure taken to facilitate internal function communication is the integration of local message buses into applications. 
+In common serverless computing systems, an internal request is treated the same way as an external request, which means a request from one function to another 
+function in the same application must pass through the full end-to-end function call path. Using a message bus in each application container creates a shortcut for such requests, 
+while also enabling asynchronous communication. Instead of sending an internal function request to, for example, a global controller, where each request passes through, in SAND 
+an internal function request is sent to the local message bus, remaining in the containers network. Although \textsc{Sand} also introduces a global message bus as a fail-safe 
+for message delivery, its implementation was deemed non-essential to the core improvements and therefore not integrated into Nuclio.
+
+\subsection{Implementation Overview}
+To improve Nuclio, isolation between applications and local message buses were the main concepts to be implemented.
+
+\subsubsection{Isolation Between Applications}
+When Nuclio is running on Kubernetes, every function gets its own pod. To implement application sandboxing we decided to isolate applications within pods, enabling multiple
+ functions to coexist within a single pod. This approach differs from the original \textsc{Sand} implementation, which employed container-level sandboxing.  
+ (why was container level sandboxing not an option?)
+
+
+\subsubsection{Local Message Buses}
+When one function in Nuclio invokes another, whether the function is of another or the same application, the request exits the current pod, passing through the dashboard. 
+The dashboard then sends the request, making it enter another pod and finally reaching the target function, where it can be processed. Given that when using pod-level sandboxing, 
+two functions of the same application are already located in the same pod, their communication can be heavily sped up.
+
+
+
 \cite{akkus2018sand}
