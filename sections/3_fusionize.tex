@@ -25,7 +25,7 @@ configuration and inlining tasks based on monitored performance.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{../figures/fusionize_highlvl}
+    \includegraphics[width=\linewidth]{figures/fusionize_highlvl}
     \caption{
         High-level overview of \textsc{Fusionize} \cite{schirmer2023fusionize}.
         \textsc{Fusionize} optimizes FaaS tasks' performance and cost by
@@ -72,7 +72,7 @@ deployment via Nuclio.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{../figures/fusionizer_highlvl}
+    \includegraphics[width=\linewidth]{figures/fusionizer_highlvl}
     \caption{
         High-level implementation overview. The user does not deploy or invoke
         their tasks through nuclio, but the Fusionizer server which applies the
@@ -108,7 +108,7 @@ interface, the Optimizers, the Task Fuser, and the Dispatcher.
 
 \begin{figure}
     \centering
-    \includegraphics[width=.8\linewidth]{../figures/fusionizer_components}
+    \includegraphics[width=.8\linewidth]{figures/fusionizer_components}
     \caption{
         Fusionizer server components. The API server forwards incoming requests
         to the Task Manager. Then, following the fusion setup configured by the
@@ -303,7 +303,7 @@ deployment, providing the Dispatcher with handler scripts from all tasks.
 
 \begin{figure}
     \centering
-    \includegraphics[width=.5\linewidth]{../figures/fusionizer_dispatcher}
+    \includegraphics[width=.5\linewidth]{figures/fusionizer_dispatcher}
     \caption{
         The Fusionizer Dispatcher routes incoming requests to the correct task
         within a Nuclio function, manages intra-group traffic, and can locally
