@@ -1,28 +1,28 @@
-\section{SAND}
+\section{SAND}\label{sec:sand}
 
 In this section, we introduce the main ideas behind SAND, describe our implementation for Nuclio and the components in detail, and compare our implementation to that of Akkus et al.~\cite{akkus2018sand}.
 
 \subsection{Concepts}
 
-When building serverless applications, it is important to connect the invocations different functions into function chains or workflows.
+When building serverless applications, it is important to connect the invocations of different functions into function chains or workflows.
 Because FaaS-platforms often host functions of different applications for different users, providing isolation between functions is a critical issue.
 It should not be possible for a function to access the data of functions deployed by other users, for example.
 At the same time, functions of the same application typically requires less isolation between each other than functions of different applications.
-Akkus et al.~refer to this idea as \enquote{two-level fault isolation}.
+Akkus et al.~refer to this idea as \enquote{two-level fault isolation}~\cite{akkus2018sand}.
 In turn, reducing isolation between functions (of the same application) can lead to performance improvements.
-Instead of trying to optimize for individual functions, we can reduce the total workflow duration by reducing the latency between steps of a workflow.
-Similarly, allowing different functions to access shared data can improve the platform's resource use. 
+Instead of trying to optimize individual functions, we can reduce the total workflow duration by reducing the latency between steps of a workflow.
+Similarly, allowing different functions to access shared data can improve the platform's resource usage. 
 
 To demonstrate these ideas, Akkus et al.~present SAND~\cite{akkus2018sand}.
-SAND is a serverless platform that aims at improving application performance by providing less isolation between functions of the same application.
+SAND is a serverless platform that aims at improving application performance by reducing the isolation between functions of the same application.
 Figure~\ref{fig:sand_architecture} shows an overview of SAND's architecture.
 The platform consists of the following components.
 \begin{itemize}
     \item \emph{Grain}: A grain is an individual FaaS function.
     \item \emph{Application}: An application is a set of functions and the workflows defined for these functions. It can span across multiple hosts.
-    \item \emph{Sandbox}: An application has its own container on a host, which is a sandbox. 
+    \item \emph{Sandbox}: An application has its own container on a host, which is the sandbox. 
     \item \emph{Message bus}: A message bus is a means for functions of the same application to communicate. 
-    \item \emph{Grain worker}: A grain worker is a function worker. It loads the function code and its dependencies, subscribes to the grain's queue and invokes the function accordingly.
+    \item \emph{Grain worker}: A grain worker is a function worker. It loads the function code and its dependencies, subscribes to the grain's queue, and invokes the function accordingly.
 \end{itemize}
 
 \subsubsection{Application Sandboxing}\label{subsub:application_sandboxing}
@@ -50,18 +50,18 @@ The benefits of this approach are threefold.
 
 \subsubsection{Hierarchical Message Queuing}
 
-To implement a workflow in a serverless platform that does not explicitly provide means of function chaining, functions typically invoke the workflow's next step by sending requests to the platform in the same way an external invocation would do.
+To implement a workflow in a serverless platform that does not explicitly provide means of function chaining, functions typically invoke the workflow's next step by sending requests to the platform in the same way an external invocation would be sent.
 This is inefficient from both the perspective of the platform and of the workflow developer.
 For the platform, this creates additional load as internal requests compete for resources with external requests at the platform's gateway.
 For the workflow developer, this adds potentially high latency between function calls, which increases the total workflow duration and end-to-end latency, in turn.
 
 SAND can run in a distributed manner across multiple hosts.
 In addition, it is possible for an application to span multiple hosts.
-For example, the application could consist of more functions than a single SAND host can host, or the application might be distributed across multiple regions.
+For example, the application could consist of more functions than a single SAND host can handle, or the application might be distributed across multiple regions with improved function placement.
 Consequently, functions of the same application need to be able to communicate with other functions running on the same and on different hosts.
 
 As SAND treats internal and external requests differently, it provides two additional options for functions to communicate.
-This allows SAND to \enquote{create shortcuts for functions that interact with each other}~\cite{akkus2018sand}.
+This allows SAND to have \enquote{shortcuts for functions that interact with each other}~\cite{akkus2018sand}.
 \begin{itemize}
     \item The \emph{local message bus} allows functions in the same sandbox to communicate.
     \item The \emph{global message bus} handles invocations across hosts and serves as backup for the local message buses.
@@ -92,16 +92,16 @@ Taking this into account, we choose Kubernetes pods as our means of application 
 This way, our implementation merges Nuclio's function pods to create application sandboxes. Figure~\ref{fig:sandbox} shows an overview of our sandbox design, which contains $n$ containers for different function processors, $n-1$ containers for the grain workers, and a single container for the local message bus.
 
 To invoke other functions, a function sends an AMQP message to the local message bus (which it can reach at \texttt{localhost:5672}). 
-The queues have same name as the functions for which they process requests, and the messages contain the function inputs. 
+The queues have the same name as the functions for which they process requests, and the messages contain the function inputs. 
 This allows the actual workflows to be determined dynamically at runtime depending on the functions' logic and their inputs.
 
 Figure~\ref{fig:sandbox} also shows the general workflow process in the sandbox. 
 \begin{enumerate}
     \item First, the Nuclio dashboard forwards an (external) request to the sandbox, where it is received directly by the workflow's first function. 
-        The function is invoked, after which is invokes the next step by sending a message to queue corresponding to the workflow's next step.
-    \item Next, the second function's grain worker—which is subscribed to \texttt{queue \#1}—received the message and invokes its function.
+        The function is invoked, after which it invokes the next step by sending a message to queue corresponding to the workflow's next step.
+    \item Next, the second function's grain worker—which is subscribed to \texttt{queue \#1}—receives the message and invokes its function.
         Again, the function is invoked, and it sends a message \texttt{queue \#2} after it has finished.
-    \item Last, the second grain worker received the message for the last step.
+    \item Last, the second grain worker receives the message for the last step.
         It invokes its function, which concludes the workflow.
 \end{enumerate}
 
@@ -116,7 +116,7 @@ Next, we go over the different components of our implementation in more detail a
 \subsubsection{Sandbox}\label{subsub:sandbox}
 
 In our implementation, a sandbox corresponds to a Kubernetes pod. 
-Consequently, an application is a set of pod that run on different nodes, where the functions communicate through their local message bus or the Nuclio dashboard, depending on the location of the next function.
+Consequently, an application is a set of pods that run on different nodes, where the functions communicate through their local message bus or the Nuclio dashboard, depending on the location of the next function.
 
 When deploying a function to its K8s backend, Nuclio creates a new \texttt{deployment} (which is a Kubernetes resource).
 We modify this deployment to create custom application sandboxes.
@@ -127,12 +127,12 @@ As part of using Nuclio's K8s backend, we create a Docker registry that is used 
 The images for the function processor have to be pushed into this registry.
 In addition, we build a docker image for the grain workers and an image for the local message bus, which also have to be pushed to the registry.
 
-Next, we modify the deployment configuration created for the workflow's first step and modify it to include all other components of the sandbox.
+Next, we modify the deployment configuration created for the workflow's first step to include all other components of the sandbox.
 It is important to note that we have to modify the \emph{deployment} instead of, for example, the pod configuration. 
 Otherwise, K8s will not add any additional containers to the previously created pod.
 To add the additional containers to the pod, we list them under \texttt{spec.template.spec.containers} in the deployment configuration.
 Here, we also set the ports and environment variables for the containers. 
-The ports we set for the containers have to be unique; in K8s, \texttt{localhost} always refers to the pods.
+The ports we set for the containers have to be unique; in K8s, \texttt{localhost} always refers to a pod.
 Since containers in the same pod share their network space, networking between them becomes easier, but the ports used cannot overlap across containers.
 For setting up the grain workers, we set the environment variables \texttt{FUNCTION\_NAME} and \texttt{FUNCTION\_PORT} to point to their respective function. 
 It is also noteworthy that this approach to building sandboxes makes our SAND implementation compatible with our ProFaaStinate implementation.
@@ -153,20 +153,20 @@ Because of the intra-pod networking outlined above, function processors for diff
 \subsubsection{Grain Worker}
 
 The grain workers are implemented as a Docker container running Alpine Linux 3.19\footnote{https://www.alpinelinux.org/} and Golang 1.21.4\footnote{https://go.dev/}.
-When started, the grain worker looks for the environment variables set earlier (see~\ref{subsub:sandbox}) and subscribes to the respective queue at the local message bus.
+When started, a grain worker looks for the environment variables set earlier (see~\ref{subsub:sandbox}) and subscribes to the respective queue at the local message bus.
 If the queue does not yet exist, it is created by the grain worker.
 For each message it receives from the local message bus, it sends an HTTP request to the correct function processor in order to invoke the function.
 
 Within the sandbox, there exist $n$ grains and $n-1$ grain workers.
-Since the workflow's first function is invoked directly by the request from the dashboard, there is no need for additional grain worker for the first function.
+Since the workflow's first function is invoked directly by the request from the dashboard, there is no need for an additional grain worker for the first function.
 Cyclic workflows could pose an exception to this; however, the sandbox' configuration can be easily adapted to fit this use case.
 
 \subsubsection{Local Message Bus}
 
 The local message bus is implemented a Docker container running Ubuntu 22.04 LTS\footnote{https://releases.ubuntu.com/jammy/}.
 This container runs RabbitMQ, which we use as the message bus. 
-We choose to use Ubuntu as the base image even though there is a RabbitMQ Docker image because the image is only community-maintained and less stable in our experience.
-Conversely, using Ubuntu allows us to use the APT package \texttt{rabbitmq-server}, which is one of the recommended options\footnote{https://www.rabbitmq.com/docs/install-debian}.
+We chose to use Ubuntu as the base image even though there is a RabbitMQ Docker image because the image is only community-maintained and less stable in our experience.
+Conversely, using Ubuntu allows us to use the APT package \texttt{rabbitmq-server}, which is one of the recommended options\footnote{https://www.rabbitmq.com/docs/install-debian} for installing the message broker.
 
 The container exposes the port 5672 to receive AMQP messages and 15672, which allows us to access RabbitMQ's management interface (with port forwarding). 
 
@@ -200,7 +200,7 @@ Further, using containers for sandboxing would have required a near re-write of 
 
 \paragraph{Workflow Process}
 
-The last and smallest difference lies in the beginning of the workflow processes. 
+The last and smallest difference lies in the beginning of the workflow process. 
 In SAND, after a request reaches the platform, the load balancer forwards it to the global message bus, where a grain worker handles it.
 In contrast, requests go directly from the dashboard to the workflow's first function in our implementation.
 The reason for this difference is that the Nuclio dashboard serves as load balancer and global message bus in our system.
@@ -212,14 +212,14 @@ Our implementation has the following limitations.
 \paragraph{Data Layer}
 
 In addition to the hierarchical message queuing, the SAND platform also has a data layer, which allows the sharing of references to data instead of transferring the actual data between functions.
-This data layer did not serve a large purpose for our project, as the implementation of application sandboxing and hierarchical message queuing in Nuclio was motivated by the comparison of total workflow durations of workflows using Fusionize and SAND.
+This data layer did not serve a large purpose in our project, as the implementation of application sandboxing and hierarchical message queuing in Nuclio was motivated by the comparison of total workflow durations of workflows between Fusionize and SAND.
 However, adding this data layer does not pose a large challenge: In SAND, the (local) data layer is a key-value store \enquote{runs on each host similar to the local message bus}~\cite{akkus2018sand}.
-In order to add this to our implementation, a key-value store can be added as an addition container inside our application pod, which enables the same functionality. 
+In order to add this to our implementation, a key-value store can be added as an additional container inside an application's pod, which enables the same functionality. 
 
 \paragraph{Pods as Sandboxes}
 
 Using Kubernetes pods as sandboxes comes with a performance penalty, compared to other options listed in~\ref{subsub:application_sandboxing}.
-This is to be expected, as Kubernetes pods are a significantly larger unit for sandboxing than, for example, using unikernels; however, it is still the best-fitting choice given Nuclio's design decisions.
+This is to be expected, as Kubernetes pods are a significantly larger unit for sandboxing than, for example, using unikernels; however, it is still the best-fitting choice given Nuclio's design.
 
 \paragraph{The Nuclio Dashboard}
 
