@@ -27,7 +27,7 @@ The platform consists of the following components.
 
 \subsubsection{Application Sandboxing}\label{subsub:application_sandboxing}
 
-\begin{figure}[!h]
+\begin{figure}
     \centering
     \includegraphics[width=\linewidth]{figures/sand_architecture.pdf}
     \caption{
@@ -143,7 +143,8 @@ Since our ProFaaStinate implementation modifies the Nuclio dashboard to allow as
 
 A grain is represented by a Nuclio function processor. 
 For our use case, the grain carries the user's function, listens to HTTP requests, and invokes the function accordingly.
-More general information on Nuclio's function processor can be found in section~\ref{sec:background}. % TODO TODO TODO
+More general information on Nuclio's function processor can be found in
+section~\ref{sec:nuclio}. % TODO TODO TODO
 
 Nuclio's function processors contain workers to execute the user's code and different triggers to listen for requests.
 We modified the HTTP trigger to be able to configure on which port it listens for HTTP requests inside the port using the environment variable \texttt{SAND\_PORT\_INTERNAL}.
