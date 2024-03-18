@@ -1,1 +1,77 @@
 \section{Evaluation}\label{sec:evaluation}
+
+% This section shows benchmark designs and results of each papers' implementation by us.
+% sand and fusionize attempt to solve similar problems -> same evaluation and
+% comparison: latency benchmark aimed at measuring network overheads
+% profaastinate is different -> own evaluation:
+% all evaluations' results are discussed together in section
+% \ref{sec:discussion}
+
+This section provides an overview of our benchmark designs and the results of
+our implementation for each paper. SAND and \textsc{Fusionize} attempt to solve
+similar problems, hence they share the same evaluation and are directly compared
+to each other. We primarily focus on the latency benchmark designed to measure
+network overheads. On the other hand, \textsc{ProFaaStinate} is different from
+the other approaches and therefore requires its own specific evaluation. The
+outcomes of all these evaluations will be collectively discussed in Section
+\ref{sec:discussion}.
+
+\subsection{Fusionize and SAND}
+
+% for fusionize and sand we designed a benchmark aimed at isolating the network
+% overhead to simulate cascading cold starts and double billing. We chose method
+% best showcases end to end latencies between faas functions we decided for
+% synthetic base load to investigate system's performance under maximum stress.
+
+% To showcase maximum latency, we designed two tasks, shown in Figure X,
+% \emph{interface} task and \emph{counter} task. The counter Task receives a
+% number and returns the number, incremented by one. The interface task receives
+% a \emph{destination} number by the user and invokes the counter task, starting
+% with the number zero. The result of the counter task is then used to invoke
+% the counter task again until the destination number is reached.
+
+% This proposed load generator is unconventional, as it resides within the
+% system under test. However, this design allows for function invocation within
+% the platfrom and most importantly \emph{between} functions. To start the
+% benchmark, only the interface task needs to be invoked with destination
+% number and latency between invocation and result is to measured.
+
+For \textsc{Fusionize} and SAND, we have constructed a benchmark with the
+intention of isolating networking overhead. This is designed to simulate scenarios
+involving cascading cold starts and double billing. We made this decision based
+on our belief that this approach most effectively displays the end-to-end
+latencies that can occur between FaaS functions. We chose to employ a synthetic
+base load for our testing in order to examine the system's performance under
+maximum stress.
+
+In order to illustrate the maximum latency, we devised two tasks. These tasks,
+which can be seen in Figure \ref{fig:bench}, are known as the \emph{interface}
+and \emph{counter} tasks. The objective of the counter task is to receive a
+number and return the same number after it has been increased by one. The
+interface task works by accepting a \emph{destination} number supplied by the
+user, then invoking the counter task, beginning with the number zero. Following
+this, the result of the counter task is used to again invoke the counter task,
+repeating until the destination number is reached.
+
+Our proposed load generator has an unconventional design, as it resides within
+the system under test (SUT). However, this design allows function invocation
+within the platform, and, even more crucially, between functions. This is
+important, as both Fusionize and SAND are revolving around the communication
+between FaaS functions. To initiate the benchmark, only the interface task needs
+to be invoked with the destination number. The latency between the invocation
+and result must then be measured.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/bench}
+    \caption{
+        The Counter Task increments a given number by one. The Interface Task
+        receives a target number from the user and repeatedly invokes the
+        Counter Task, starting at zero, until the target number is achieved. The
+        Interface Task then returns this number to the user upon completion of
+        the benchmark run. This allows the user to measure the total end-to-end
+        latency.
+    }
+    \label{fig:bench}
+\end{figure}
+
