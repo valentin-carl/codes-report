@@ -57,7 +57,7 @@ is a set of tasks executed as part of the function.
 The initial concept for implementation with Nuclio was to develop a new function
 processor that would manage the inlining of functions. These would be selectable
 during the function deployment phase. However, the underlying platform component
-of Nuclio and its Kubernetes (k8s) implementation does not account for the
+of Nuclio and its k8s (k8s) implementation does not account for the
 possibility of mapping multiple tasks to a single function. A consultation with
 the Nuclio developers revealed that a complete rewriting of the platform would
 be required to enable this functionality. This proved unrealistic within the
@@ -398,3 +398,21 @@ become incompatible under certain conditions such as sharing the same
 dependencies but with varying versions, having diverse minimum and maximum
 replica counts, or possessing differing CPU limitations. A task's description is
 also excluded, in favor for the description of its fusion group.
+
+\subsection{k8s Deployment}
+
+The core part of this deployment is the Pod \emph{nuclio-fusionizer}. This Pod
+operates the Nuclio Fusionizer container, which is based on the supplied docker
+image\footnote{Fusionizer Docker Image.
+\url{ghcr.io/marvin-steinke/nuclio-fusionizer:latest}}. The container within the
+Pod is configured to listen for incoming connections on port 8000. It is set up
+with the service account \emph{nuctl-sa}, in order to enable interaction with
+the k8s API. The deployment specifies volume mounts to the host Docker socket
+and application configuration. Because the Nuclio Fusionizer utilizes Nuclio's
+nuctl component, which in turn employs Docker, the utilization of the host's
+Docker socket is favored over the less efficient Docker-in-Docker (DiD)
+alternative. Permissions for the service account are provided through a Role and
+RoleBinding. The Role \emph{nuctl-enabler} provides a range of permissions
+across various API groups and resources. These resources include ingresses,
+nuclio CRDs, services, configmaps, pods, secrets, and deployments, all of which
+facilitate the operation of nuctl.
