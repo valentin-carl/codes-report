@@ -36,6 +36,8 @@ outcomes of all these evaluations will be collectively discussed in Section
 % benchmark, only the interface task needs to be invoked with destination
 % number and latency between invocation and result is to measured.
 
+\subsubsection{Experiment Setup}
+
 For \textsc{Fusionize} and SAND, we have constructed a benchmark with the
 intention of isolating networking overhead. This is designed to simulate scenarios
 involving cascading cold starts and double billing. We made this decision based
@@ -75,3 +77,30 @@ and result must then be measured.
     \label{fig:bench}
 \end{figure}
 
+\subsubsection{Results}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/latency_sand_fusionize}
+    \caption{
+        Results of our benchmark outlined in Figure \ref{fig:bench}. Our SAND
+        implementation increases linearly and significantly faster than vanilla
+        Nuclio. Our \textsc{Fusionize} implementation appears to have nearly
+        constant latency.
+    }
+    \label{fig:latency_sand_fusionize}
+\end{figure}
+
+
+In Figure \ref{fig:latency_sand_fusionize}, we can see the results of our
+benchmark. The x-axis shows the number of function calls required the answer the
+request, and the y-axis show the measured end-to-end latency. As the interaction
+between functions increases, the end-to-end latency increases linearly for SAND.
+With 10,000 function calls, the SUT takes approximately 50 seconds to answer the
+request using our SAND implementation. For vanilla Nuclio, the latency caused by
+the same request if significantly lower at below 20 seconds. The end-to-end
+latency of vanilla Nuclio scales exponentially with increasing interaction
+between functions. With Fusionize, the latency is very close to 0 throughout the
+experiment.
+
+\subsection{ProFaaStinate}
