@@ -1,1 +1,17 @@
 \section{Conclusion}\label{sec:conclusion}
+
+Challenges associated with Function-as-a-Service (FaaS) platforms, such as high
+costs due to double billing, latency issues from cascading cold starts, and
+inefficiencies in synchronous and asynchronous function calls, have been
+addressed through novel approaches like \textsc{Fusionize}, SAND, and
+\textsc{ProFaaStinate}. Our Project explored the integration of these approaches
+within the open-source serverless platform Nuclio.
+
+Our findings indicate that these approaches have the potential to enhance the
+overall efficiency and resource utilization within serverless computing
+platforms. However, Nuclio posed as an impractical choice of a FaaS platform due
+to its instability, design decisions, and performance overheads. In general, the
+potential of these approaches is limited by container orchestration systems that
+are not designed for FaaS applications, like Kubernetes. We believe that these
+solutions will yield better results if they are integrated on a platform
+specifically engineered for them.
