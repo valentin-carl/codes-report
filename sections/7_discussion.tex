@@ -1,64 +1,94 @@
 \section{Discussion}\label{sec:discussion}
 
-% 1) experiment: why 
+% 1) experiment: why
 % 2) nuclio doof
 % 3) warum die 3 sub-projekte trotzdem gut sind
 
-In this section, we first discuss the results of our experiments, offer possible explanation for the results we observed, and interpret them.
-Next, we go over Nuclio to review how well Fusionize, SAND, and ProFaaStinate fit the platform, and we go over some drawbacks of using Nuclio we have experienced during the project. 
-Lastly, we discuss the three subprojects in more detail.
+In this section, we first discuss the results of our experiments, offer possible
+explanation for the results we observed, and interpret them. Next, we go over
+Nuclio to review how well Fusionize, SAND, and ProFaaStinate fit the platform,
+and we go over some drawbacks of using Nuclio we have experienced during the
+project. Lastly, we discuss the three subprojects in more detail.
 
 \subsection{Interpretation of Experiment Results}
 
 \subsubsection{Fusionize and SAND}
 
-There are different possible explanations for the large differences between SAND, Fusionize, and vanilla Nuclio that we observed in our experiment.
-To begin, all requests go through the Nuclio dashboard using vanilla Nuclio.
-In this case, the dashboard creates a large performance bottleneck, as all function calls have to pass through it.
-Going through the dashboard for every request adds a lot of steps for the execution of the workflow: To invoke the next step, the request leaves its current function pod, enters a different pod—containing the Nuclio dashboard—only to be routed to another function pod again.
+There are different possible explanations for the large differences between
+SAND, Fusionize, and vanilla Nuclio that we observed in our experiment. To
+begin, all requests go through the Nuclio dashboard using vanilla Nuclio. In
+this case, the dashboard creates a large performance bottleneck, as all function
+calls have to pass through it. Going through the dashboard for every request
+adds a lot of steps for the execution of the workflow: To invoke the next step,
+the request leaves its current function pod, enters a different pod—containing
+the Nuclio dashboard—only to be routed to another function pod again.
 
-In comparison, the request does not leave its pod during the workflow using SAND. 
-With SAND, a function call goes from a function processor to the local message bus, to a grain worker, to another function processor.
-In our experiment, we observed better scalability but (significantly) worse performance with regard to latency.
-An explanation for this is the environment the experiment was conducted in.
-It is possible that the end-to-end latency using SAND would be lower than the latency using SAND while deploying Nuclio on a larger Kubernetes cluster, which would give SAND's components more resources, allowing it to improve its performance.
-However, further experiments are required to confirm or deny this.
-Running on Minikube, the cost of invoking workflow steps is relatively high: Requests go from one function processor to another container—the local message bus—where RabbitMQ forwards the message to the next container, the grain worker, which—again—sends a request to the next container, where the function processor can execute the next function.
+In comparison, the request does not leave its pod during the workflow using
+SAND. With SAND, a function call goes from a function processor to the local
+message bus, to a grain worker, to another function processor. In our
+experiment, we observed better scalability but (significantly) worse performance
+with regard to latency. An explanation for this is the environment the
+experiment was conducted in. It is possible that the end-to-end latency using
+SAND would be lower than the latency using SAND while deploying Nuclio on a
+larger Kubernetes cluster, which would give SAND's components more resources,
+allowing it to improve its performance. However, further experiments are
+required to confirm or deny this. Running on Minikube, the cost of invoking
+workflow steps is relatively high: Requests go from one function processor to
+another container—the local message bus—where RabbitMQ forwards the message to
+the next container, the grain worker, which—again—sends a request to the next
+container, where the function processor can execute the next function.
 
-A difficulty for conducting experiments with Nuclio, in general, is its stability: Even with the load generated during our experiment, the platform crashed multiple times, requiring multiple experiment runs to obtain the results.
-This problem occurred more frequently as the number of function calls required to answer a request increased.
+A difficulty for conducting experiments with Nuclio, in general, is its
+stability: Even with the load generated during our experiment, the platform
+crashed multiple times, requiring multiple experiment runs to obtain the
+results. This problem occurred more frequently as the number of function calls
+required to answer a request increased.
 
-Our Fusionize implementation maintains an apparently constant performance, which is attributable to tasks within the same fusion group residing in the same Nuclio function. 
-These tasks are within the same process and therefore use the same memory space, which facilitates immediate execution. 
-The benchmark for Fusionize is simply Python code executing a loop. 
-Given this, latency is quite low and remains relatively constant for comparably low loads.
+Our Fusionize implementation maintains an apparently constant performance, which
+is attributable to tasks within the same fusion group residing in the same
+Nuclio function. These tasks are within the same process and therefore use the
+same memory space, which facilitates immediate execution. The benchmark for
+Fusionize is simply Python code executing a loop. Given this, latency is quite
+low and remains relatively constant for comparably low loads.
 
-However, this does not necessarily mean our Fusionize implementation is the best option. 
-There are potential scaling issues, particularly regarding the dependency on the configured optimization process. 
-Fusion groups may be replicated, even if only one task experiences high load. 
-If the optimization process is altered to accommodate this, all functions would need to be deleted, re-fused, and re-deployed, which could be time-intensive.
+However, this does not necessarily mean our Fusionize implementation is the best
+option. There are potential scaling issues, particularly regarding the
+dependency on the configured optimization process. Fusion groups may be
+replicated, even if only one task experiences high load. If the optimization
+process is altered to accommodate this, all functions would need to be deleted,
+re-fused, and re-deployed, which could be time-intensive.
 
-A possible solution to this would be the implementation of native \enquote{per task} scaling, instead of having Nuclio treat multiple functions as one entity. 
-Unfortunately, this is not currently possible or feasible with Nuclio. 
-It would require a significant rewrite of the core platform and its K8s interface, which is responsible for scaling.
+A possible solution to this would be the implementation of native \enquote{per
+task} scaling, instead of having Nuclio treat multiple functions as one entity.
+Unfortunately, this is not currently possible or feasible with Nuclio. It would
+require a significant rewrite of the core platform and its K8s interface, which
+is responsible for scaling.
 
 \subsubsection{ProFaaStinate}
 
 %• Experiments indicate the efficacy of ProFaaStinate:
 %• Successfully demonstrates the ability to distribute load evenly over time.
- 
-The findings from our experiments provide insights into the performance of ProFaaStinate, shedding light on its potential implications for load management within serverless environments.
-Through our evaluation, several key observations emerged: Firstly, ProFaaStinate demonstrates its capability to distribute workload evenly over time, which mitigates load spikes and ensures better resource utilization.
+
+The findings from our experiments provide insights into the performance of
+ProFaaStinate, shedding light on its potential implications for load management
+within serverless environments. Through our evaluation, several key observations
+emerged: Firstly, ProFaaStinate demonstrates its capability to distribute
+workload evenly over time, which mitigates load spikes and ensures better
+resource utilization.
 
 %• Proof of concept establishes its viability in reducing load spikes.
 %• Implementation meets function invocation deadlines while mitigating load spikes.
 %• Our implementation enhances the overall expandability compared to the initial implementation
 %• Refactored the queuing mechanism to provide a more feasible approach of sorting and storing requests
 
-Moreover, the proof of concept affirms ProFaaStinate's ability to reduce load spikes by strategically delaying workload execution.
-Furthermore, our implementation of ProFaaStinate meets function invocation deadlines and efficiently mitigates load spikes, which is crucial for maintaining system stability and performance.
-An important aspect of our implementation is the improved expandability compared to the initial version.
-By refactoring the queuing mechanism, we've devised a more feasible approach for sorting and storing requests, laying a robust foundation for future scalability.
+Moreover, the proof of concept affirms ProFaaStinate's ability to reduce load
+spikes by strategically delaying workload execution. Furthermore, our
+implementation of ProFaaStinate meets function invocation deadlines and
+efficiently mitigates load spikes, which is crucial for maintaining system
+stability and performance. An important aspect of our implementation is the
+improved expandability compared to the initial version. By refactoring the
+queuing mechanism, we've devised a more feasible approach for sorting and
+storing requests, laying a robust foundation for future scalability.
 
 %• Evaluation challenges due to Nuclio limitations:
 %    - Nuclio dashboard presents significant bottleneck.
@@ -67,20 +97,29 @@ By refactoring the queuing mechanism, we've devised a more feasible approach for
 %    - Enterprise features such as scale-to-zero mode in Nuclio, essential for Bulk scheduler, are unavailable for standalone implementation.
 %        * Implementing such features within Nuclio independently is complex.
 
-However, it's essential to acknowledge the challenges encountered during evaluation, primarily stemming from limitations within the Nuclio platform.
-The Nuclio dashboard emerged as a bottleneck, hindering efficient monitoring and management of functions.
-Running Nuclio locally via Minikube yielded a throughput of below one request per function worker per second.
-Conversely, deploying Nuclio on Docker marginally improved throughput, albeit with some complexities, which is why we conducted the evaluation of ProFaaStinate on Docker.
-Furthermore, the absence of enterprise features, particularly the scale-to-zero mode in Nuclio that was essential for the bulk scheduler, poses limitations and complicated independent implementation within Nuclio.
+However, it's essential to acknowledge the challenges encountered during
+evaluation, primarily stemming from limitations within the Nuclio platform. The
+Nuclio dashboard emerged as a bottleneck, hindering efficient monitoring and
+management of functions. Running Nuclio locally via Minikube yielded a
+throughput of below one request per function worker per second. Conversely,
+deploying Nuclio on Docker marginally improved throughput, albeit with some
+complexities, which is why we conducted the evaluation of ProFaaStinate on
+Docker. Furthermore, the absence of enterprise features, particularly the
+scale-to-zero mode in Nuclio that was essential for the bulk scheduler, poses
+limitations and complicated independent implementation within Nuclio.
 
 %• Despite being a proof of concept, ProFaaStinate demonstrates potential benefits:
 %    - Offers promise in reducing load spikes by evenly delaying workload to specified time frames.
 %    - Establishes a foundation for implementing other schedulers, adhering to common conventions for convenient implementation.
 %    - Provides an opportunity to enhance previous implementations of ProFaaStinate for improved performance and functionality
 
-Despite these challenges, ProFaaStinate shows potential benefits in reducing load spikes and establishing a foundation for implementing other schedulers in serverless environments.
-While ProFaaStinate remains a proof of concept, our experiments provide a foundation for insights into its performance and potential implications for load management in serverless environments.
-Further exploration and optimization are required to fully understand its capabilities and refine its functionality in practical applications.
+Despite these challenges, ProFaaStinate shows potential benefits in reducing
+load spikes and establishing a foundation for implementing other schedulers in
+serverless environments. While ProFaaStinate remains a proof of concept, our
+experiments provide a foundation for insights into its performance and potential
+implications for load management in serverless environments. Further exploration
+and optimization are required to fully understand its capabilities and refine
+its functionality in practical applications.
 
 \subsection{Nuclio}
 
@@ -92,8 +131,8 @@ Further exploration and optimization are required to fully understand its capabi
 %        => for example, build times are enormous at, in some cases, > 1 hour
 %        => also, the hardware requirements for deploying Nuclio onto GKE are even larger (which made it unusable for large parts of the project)
 %- Fusionize
-%    - native implementation requires re-writes of large parts of the Nuclio codebase 
-%    - -> infeasible 
+%    - native implementation requires re-writes of large parts of the Nuclio codebase
+%    - -> infeasible
 %    - -> just do from scratch or use other FaaS platform
 %- SAND
 %    - Nuclio's design decision—the use of Kubernetes as backend—dictates our design decisions for implementing application sandboxing with pods
@@ -113,38 +152,59 @@ Further exploration and optimization are required to fully understand its capabi
 %        - In general, the overhead of Kubernetes is quite high => particularly for the use as the backend of a FaaS platform
 %        - ...
 
-In the course of our project, Nuclio present us with multiple noteworthy challenges over the course of our project.
+In the course of our project, Nuclio present us with multiple noteworthy
+challenges over the course of our project.
 
-To begin, deployments proved to be more complex than anticipated, with navigating the Kubernetes documentation—or lack there of—consuming a larger portion of our project timeline than initially expected.
-Despite these obstacles, we ultimately succeeded in deploying our system with the Kubernetes backend, in addition to Docker. 
-However, even after gaining a deeper understanding of Nuclio's integration with Kubernetes, the deployment process remained less than frictionless.
-Prolonged build times, sometimes exceeding an hour, posed a significant challenge.
-Furthermore, the hardware requirements for deploying Nuclio onto Google Kubernetes Engine (GKE) proved to be prohibitively large for certain components of our project.
+To begin, deployments proved to be more complex than anticipated, with
+navigating the Kubernetes documentation—or lack there of—consuming a larger
+portion of our project timeline than initially expected. Despite these
+obstacles, we ultimately succeeded in deploying our system with the Kubernetes
+backend, in addition to Docker. However, even after gaining a deeper
+understanding of Nuclio's integration with Kubernetes, the deployment process
+remained less than frictionless. Prolonged build times, sometimes exceeding an
+hour, posed a significant challenge. Furthermore, the hardware requirements for
+deploying Nuclio onto Google Kubernetes Engine (GKE) proved to be prohibitively
+large for certain components of our project.
 
-Attempting a native implementation of Fusionize within Nuclio presented formidable challenges.
-Extensive rewrites of the Nuclio codebase would have been necessary, rendering this approach infeasible, which dictated the design of our implementation.
+Attempting a native implementation of Fusionize within Nuclio presented
+formidable challenges. Extensive rewrites of the Nuclio codebase would have been
+necessary, rendering this approach infeasible, which dictated the design of our
+implementation.
 
-The architectural decision of Nuclio to use Kubernetes as its backend significantly influenced our approach to implementing application sandboxing with pods.
-However, using Kubernetes pods as the unit of isolation for SAND introduced significant performance overhead, particularly in terms of networking.
-This underscores the importance of early design decisions in the development of a serverless platform, as the level of isolation between functions significantly impacts overall performance and independent scalability of functions.
-While SAND does not use Kubernetes pods for isolation, it's essential to note that SAND is purpose-built for application sandboxing, which gives it a natural advantage over platforms retrofitted with sandboxing capabilities like Nuclio.
+The architectural decision of Nuclio to use Kubernetes as its backend
+significantly influenced our approach to implementing application sandboxing
+with pods. However, using Kubernetes pods as the unit of isolation for SAND
+introduced significant performance overhead, particularly in terms of
+networking. This underscores the importance of early design decisions in the
+development of a serverless platform, as the level of isolation between
+functions significantly impacts overall performance and independent scalability
+of functions. While SAND does not use Kubernetes pods for isolation, it's
+essential to note that SAND is purpose-built for application sandboxing, which
+gives it a natural advantage over platforms retrofitted with sandboxing
+capabilities like Nuclio.
 
-ProFaaStinate faced hurdles related to Nuclio's enterprise features, which are either unsupported or poorly documented in the open-source variant.
-Moreover, limitations within the platform's dashboard constrained performance significantly. 
-One possibility of realize the full potential of ProFaaStinate is the exploration of alternative load balancers for more comprehensive benchmarking.
+ProFaaStinate faced hurdles related to Nuclio's enterprise features, which are
+either unsupported or poorly documented in the open-source variant. Moreover,
+limitations within the platform's dashboard constrained performance
+significantly. One possibility of realize the full potential of ProFaaStinate is
+the exploration of alternative load balancers for more comprehensive
+benchmarking.
 
-Regarding performance, Nuclio's architecture, designed to expose functions directly, implies that its dashboard is not optimized for high-performance load balancing, posing challenges for systems that rely on it like ours.
-Additionally, the inherent overhead of Kubernetes, particularly when used as the backend for a FaaS platform, can significantly impact performance.
+Regarding performance, Nuclio's architecture, designed to expose functions
+directly, implies that its dashboard is not optimized for high-performance load
+balancing, posing challenges for systems that rely on it like ours.
+Additionally, the inherent overhead of Kubernetes, particularly when used as the
+backend for a FaaS platform, can significantly impact performance.
 
 %Our experience with Nuclio shed light on various technical and operational challenges, emphasizing the complexities involved in deploying and managing serverless platforms.
 %These insights provide valuable considerations for future research and development efforts in the field of cloud computing and serverless architectures.
 
 \subsection{Fusionize, SAND, and ProFaaStinate}
 
-%- While Nuclio might not have been a perfect fit for the three (which was to be expected with Nuclio not being built with these in mind), they are still very useful additions 
+%- While Nuclio might not have been a perfect fit for the three (which was to be expected with Nuclio not being built with these in mind), they are still very useful additions
 %- Fusionize performed better than SAND is it takes the idea of \enquote{two-level fault isolation} to its logical conclusion
 %- While it would constitute a major design change, replacing Nuclio's individual function pods with native sandboxes could lead to significant performance benefits
-%- The relevance of managing load spikes by spreading requests out over time can be seen by real-world implementations such as XFaaS, which made use of the approach after it had been introduced in ProFaaStinate 
+%- The relevance of managing load spikes by spreading requests out over time can be seen by real-world implementations such as XFaaS, which made use of the approach after it had been introduced in ProFaaStinate
 %- As seen in our implementation, the Fusionize and SAND can each be combined with ProFaaStinate, which naturally fits for scheduling FaaS workflows
 %- Function fusion and scheduling as in ProFaaStinate both lead to more efficient resource use, which is of universal interest
 %    - platform owner can increase their profits if the hardware they use is better utilized
@@ -153,20 +213,36 @@ Additionally, the inherent overhead of Kubernetes, particularly when used as the
 %- Despite the drawbacks of Nuclio, the benefits of the three approaches became very clear
 %- However, they would become even more clear in a FaaS platform that was designed with them in mind from the beginning
 
-While Nuclio may not have been specifically tailored for the three approaches we explored, they nonetheless offer valuable contributions to the platform.
+While Nuclio may not have been specifically tailored for the three approaches we
+explored, they nonetheless offer valuable contributions to the platform.
 
-First, we observed that Fusionize greatly outperformed SAND by taking the concept of \enquote{two-level fault isolation} to its logical conclusion of reducing isolation between functions of the same application as far as possible.
-Nonetheless, while it would constitute a major design change, replacing Nuclio's individual function pods with native sandboxes could lead to significant performance benefits
+First, we observed that Fusionize greatly outperformed SAND by taking the
+concept of \enquote{two-level fault isolation} to its logical conclusion of
+reducing isolation between functions of the same application as far as possible.
+Nonetheless, while it would constitute a major design change, replacing Nuclio's
+individual function pods with native sandboxes could lead to significant
+performance benefits
 
-Next, the importance of managing load spikes by distributing requests over time is underscored by real-world implementations such as XFaaS~\cite{xfaas}, which adopted this approach following its introduction in ProFaaStinate.
-In addition, our implementation demonstrated that Fusionize and SAND can seamlessly integrate with ProFaaStinate~\cite{schirmer2023profaastinate}, aligning naturally with scheduling FaaS workflows.
+Next, the importance of managing load spikes by distributing requests over time
+is underscored by real-world implementations such as XFaaS~\cite{xfaas}, which
+adopted this approach following its introduction in ProFaaStinate. In addition,
+our implementation demonstrated that Fusionize and SAND can seamlessly integrate
+with ProFaaStinate~\cite{schirmer2023profaastinate}, aligning naturally with
+scheduling FaaS workflows.
 
-Both function fusion and scheduling, as demonstrated in Fusionize, SAND, and ProFaaStinate, contribute to more efficient resource utilization—a concept of universal interest.
-Platform owners stand to increase profits through better hardware utilization, while application developers can achieve performance gains by optimizing communication between functions.
-Similarly, self-hosted FaaS platforms benefit from enhanced performance and resource efficiency.
+Both function fusion and scheduling, as demonstrated in Fusionize, SAND, and
+ProFaaStinate, contribute to more efficient resource utilization—a concept of
+universal interest. Platform owners stand to increase profits through better
+hardware utilization, while application developers can achieve performance gains
+by optimizing communication between functions. Similarly, self-hosted FaaS
+platforms benefit from enhanced performance and resource efficiency.
 
-Despite the challenges posed by Nuclio, the benefits of the three approaches became evident.
-However, their full potential would be even more pronounced in a FaaS platform designed with them in mind from inception.
+Despite the challenges posed by Nuclio, the benefits of the three approaches
+became evident. However, their full potential would be even more pronounced in a
+FaaS platform designed with them in mind from inception.
 
-In summary, while Nuclio may not have been initially engineered for these approaches, their implementation underscores their relevance and potential benefits in the realm of serverless computing.
-These insights emphasize the value of incorporating such considerations into the design of future FaaS platforms to maximize efficiency and performance.
+In summary, while Nuclio may not have been initially engineered for these
+approaches, their implementation underscores their relevance and potential
+benefits in the realm of serverless computing. These insights emphasize the
+value of incorporating such considerations into the design of future FaaS
+platforms to maximize efficiency and performance.
