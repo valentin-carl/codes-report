@@ -20,6 +20,7 @@
 \usepackage{url}
 \usepackage[capitalise]{cleveref}
 \usepackage{booktabs}
+\usepackage{makecell}
 
 \lstdefinestyle{python}{
     language=Python,
@@ -92,11 +93,26 @@
 \begin{center}
     \begin{tabular}{l l} \toprule
         Name & Sections \\ \midrule
-        Valentin Carl & \ref{sec:sand}, \ref{sec:evaluation}, \ref{sec:discussion} \\
-        Daniel Gottschling & \ref{sec:sand}, \ref{sec:evaluation} \\
+        Valentin Carl &
+            \ref{sec:sand},
+            \ref{subsubsec:evaluation:fusionize_and_sand:results},
+            \ref{sec:discussion},
+            \\
+        Daniel Gottschling &
+            \ref{sec:sand},
+            \ref{subsubsec:evaluation:fusionize_and_sand:results},
+            \\
         Jonas Heisterberg & \\
         David Schmidt & \\
-        Marvin Steinke & \ref{sec:introduction}, \ref{sec:fusionize}, \ref{sec:evaluation} \\ \bottomrule
+        Marvin Steinke & \makecell[l]{
+            Abstract,
+            \ref{sec:introduction},
+            \ref{sec:fusionize},
+            \ref{sec:evaluation}-intro, \\
+            \ref{subsubsec:evaluation:fusionize_and_sand:experiment_setup},
+            \ref{subsubsec:discussion:interpretation_of_experiment_results:fusionize_and_sand},
+            \ref{sec:conclusion}
+        }\\ \bottomrule
     \end{tabular}
 \end{center}
 
