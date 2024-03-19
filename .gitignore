@@ -14,3 +14,4 @@
 # Exclude files in figures/
 !figures/*.pdf
 
+build/
