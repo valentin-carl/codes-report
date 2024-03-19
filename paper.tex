@@ -65,7 +65,26 @@
 \pagestyle{plain}
 
 \begin{abstract}
-    Wow, what an abstract!
+
+    Serverless cloud computing, such as Function-as-a-Service (FaaS), offers
+    operational benefits for large-scale applications. These include enhanced
+    developer productivity and cost-efficiency. However, there are challenges
+    such as double billing, cascading cold starts, and added latency due to
+    inefficient scheduling of function calls. This project focuses on
+    integrating three potential solutions - \textsc{Fusionize}, SAND, and
+    \textsc{ProFaaStinate} into the open-source serverless platform Nuclio.
+    \textsc{Fusionize} reduces remote call overheads and prevents cold start
+    cascades by using function fusion. SAND uses application-level sandboxing
+    and a hierarchical message bus for efficient cloud resource usage and
+    latency reduction. \textsc{ProFaaStinate} tries to efficiently manage
+    resource utilization by delaying the execution of function calls. However,
+    implementing these solutions within Nuclio has exposed some limitations,
+    mainly because of the platform's instability and the restrictions posed by
+    container orchestration systems which are not specifically tailored for FaaS
+    applications like Kubernetes. For these optimization techniques to work
+    effectively, they need to be integrated within platforms explicitly designed
+    to accommodate them.
+
 \end{abstract}
 
 \setcounter{tocdepth}{1}
