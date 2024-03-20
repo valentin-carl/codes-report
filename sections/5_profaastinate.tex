@@ -6,7 +6,7 @@
 The next section provides an overview of the ProFaaStinate paper proposed by Schirmer et al. \cite{schirmer2023profaastinate}. First, it digs into the real-world problems it aims to tackle, breaks down its key concepts, and also points out some problems we have identified. Subsequently, this section delves into the detailed explanation and implementation of its components. Finally, we will offer insights into how to effortlessly extend the implementation with custom schedulers and other supplementary components. Additionally, we outline the conventions developers must uphold to ensure adherence to a seamless workflow.
 \begin{figure}
     \centering
-    \includegraphics[width=.9\linewidth]{figures/profaastinate/architecture_gray.pdf}
+    \includegraphics[width=\linewidth]{figures/profaastinate/architecture_gray.pdf}
     \caption{ProFaaStinate improves conventional FaaS platforms with a priority queue and Call Scheduler. Asynchronous calls are placed into the priority queue, managed by the Call Scheduler. The scheduler operates in two states, responding to monitoring data: busy mode prioritizes urgent calls, while idle mode handles both urgent and non-urgent calls. \cite{schirmer2023profaastinate}}
     \label{fig:og-profaastinate}
 \end{figure}
