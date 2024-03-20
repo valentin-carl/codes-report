@@ -121,9 +121,7 @@ In this section, we aim to evaluate the implementation status of both our functi
 
 \subsubsection{Experiment Setup}
 
-\textit{
 It's worth noting that we were unable to test the Bulk Scheduler in any meaningful way, as Nuclio only provides the scale to zero feature to enterprise users. We can confidently say that we did everything possible to implement that feature on our own, including a consultation with a developer from Nuclio. To the disadvantage of our experiment, we could not activate this feature. And without it, the integration of a Bulk Scheduler doesn't really make sense, although it does work.
-}
 
 In concrete terms, we aimed to evaluate the performance of ProFaaStinate when the Idle and Deadline schedulers are enabled. To achieve this, we devised a benchmark that subjects Nuclio to high load scenarios with asynchronous calls. By default, these calls are executed immediately in Nuclio, but with the schedulers enabled, they should be distributed evenly over time. The benchmark strategy involved imposing a constant load on Nuclio with a baseline of calls, while gradually increasing the load at intervals. We used k6, a load testing tool, to orchestrate and execute the benchmark.
 The benchmark, which comprised function calls tasked with calculating prime numbers as well as executing functions named "vanilla" and "second", aimed at inducing high CPU utilization and compelling ProFaaStinate to delay certain calls. This setup initiated the benchmark with a base load of 800 requests having the deadline set to 4000 seconds. Subsequently, the benchmark sent a total of 800 requests at intervals, with the deadline between 5 seconds and 4000 seconds.

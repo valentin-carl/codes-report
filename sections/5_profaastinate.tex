@@ -161,7 +161,7 @@ In general, the deployer is used to save resources in the deployment by automati
 To stop certain containers, it forwards stop requests to the dedicated deployer services for Docker or Kubernetes, which do this for it. The environment services are integrated through an abstract layer via an interface, so that new environments could easily be deployed using the same approach, which is consistent with our desire for a modular extensible architecture.
 It also constantly communicates with the various schedulers to ensure that the required containers are running when they need to be called synchronously. It can also continue functions that have already been stopped via the interface.
 
-\textit{It is important to note that while a Docker implementation was successfully implemented, the Kubernetes implementation could not be completed within the given timeframe as it became too complex. This component was an attempt to imitate the Premium feature of Nuclio. Various ideas were collected and implemented for this, but in the end, the components created was not sufficiently convincing in terms of performance, and the deployer was deactivated for the final evaluation.} 
+It is important to note that while a Docker implementation was successfully implemented, the Kubernetes implementation could not be completed within the given timeframe as it became too complex. This component was an attempt to imitate the Premium feature of Nuclio. Various ideas were collected and implemented for this, but in the end, the components created was not sufficiently convincing in terms of performance, and the deployer was deactivated for the final evaluation. 
 
 \subsubsection{Nexus}
 \label{sec:nexus}
