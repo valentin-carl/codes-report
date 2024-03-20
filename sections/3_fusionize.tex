@@ -96,7 +96,8 @@ does not represent any optimization strategies.
 This strategy offers significant advantages as it can be executed without the
 time-consuming task of comprehending and altering the existing codebase of
 Nuclio. The applicability of this strategy is also not confined to Nuclio as the
-single FaaS platform, as further detailed in Section X.
+single FaaS platform, as further detailed in Section
+\ref{subsec:fusionize:compatibility_with_public_clouds}.
 
 \subsection{Components}
 
@@ -416,3 +417,26 @@ RoleBinding. The Role \emph{nuctl-enabler} provides a range of permissions
 across various API groups and resources. These resources include ingresses,
 nuclio CRDs, services, configmaps, pods, secrets, and deployments, all of which
 facilitate the operation of nuctl.
+
+\subsection{Compatibility with public clouds}
+\label{subsec:fusionize:compatibility_with_public_clouds}
+
+% - in current state Fusionizer server can not be used in public clouds
+% - but can easily be extended:
+% - nuctl component needs to be replaced with cloud provider specific api
+% - minor adjustments in remaining Fusionizer architecture to offer general
+%   support
+% - Fusionizer should be deployed within virtual private network with
+%   Fusionizer-enabled tasks
+% - however, this extension does not solve problems discussed in Section 7
+
+At present, the Fusionizer server cannot be utilized in public clouds.
+Nevertheless, feasible extensions could readily enhance its utility. For this to
+be possible, the nuctl component would have to be replaced with an API specific
+to the cloud provider. There would also be a need for slight modifications in
+the remaining Fusionizer architecture to offer general support. Ideally,
+Fusionizer should be deployed within a virtual private network that caters to
+Fusionizer-enabled tasks to avoid latency overhead. However, even with these
+extensions, the issues highlighted in Section \ref{sec:discussion} will still
+persist.
+
