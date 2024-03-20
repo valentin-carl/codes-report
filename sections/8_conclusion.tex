@@ -15,3 +15,26 @@ potential of these approaches is limited by container orchestration systems that
 are not designed for FaaS applications, like Kubernetes. We believe that these
 solutions will yield better results if they are integrated on a platform
 specifically engineered for them.
+
+% - for future work within domain of such serverless platform we think ability
+%   to measure power consumption for each container can be helpful
+% - frameworks like Kepler or Scaphandre exist for this
+% - operate on hypervisor level
+% - such information can be integrated into a Profaastinate scheduler to achieve
+%   optimal power usage and thus costs
+% - users could possible pay per consumed Watt instead of per usage
+% - can be combined with existing testbeds like Wiesner et al.'s Vessim to
+%   develop carbon-aware application and systems
+
+For future work in the domain of such serverless platform, we believe the
+ability to measure power consumption for each container could prove beneficial.
+There are existing frameworks such as Kepler \cite{amaral2023kepler} or
+Scaphandre \footnote{Scaphandre Metrology Agent.
+\url{https://github.com/hubblo-org/scaphandre}} that perform such tasks,
+operating at the hypervisor level. This power consumption information could e.g.
+be integrated into a \textsc{ProFaaStinate} scheduler, with the aim of
+optimizing power usage and, therefore, costs. Implementing such a system could
+potentially lead to users paying per Watt consumed rather than usage. This idea
+could also be combined with existing testbeds, notably Wiesner et al.'s Vessim
+\cite{wiesner2023sil}, to facilitate the development of carbon-aware
+applications and systems.
