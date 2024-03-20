@@ -64,6 +64,15 @@ between FaaS functions. To initiate the benchmark, only the interface task needs
 to be invoked with the destination number. The latency between the invocation
 and result must then be measured.
 
+% - In a production setting, Nuclio is run in k8s cluster
+% - We configured deployment of our approaches for k8s
+% - For our benchmarks we deployed our system in local Minikube cluster
+
+In a production environment, Nuclio operates within a k8s cluster. We have
+successfully configured the deployment of our approaches for operation within
+the k8s environments. For benchmarking purposes, we deployed our system within a
+local Minikube\footnote{\url{https://minikube.sigs.k8s.io/}} cluster.
+
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{figures/bench}
