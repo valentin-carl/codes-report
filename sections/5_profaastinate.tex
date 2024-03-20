@@ -181,7 +181,7 @@ In our implementation, we refactored the approach of a single scheduler to view 
 When building custom schedulers, some conventions must be taken into consideration. The scheduler has to be initialized inside the Nexus and integrated within the list of known schedulers so that the Nexus can start it. The Nexus Queue must be passed to the scheduler during initialization. Furthermore, it needs methods to start, stop, and gather the status of the scheduler. A developer might use the existing schedulers as orientation. The Nexus will then use those methods to start and stop the scheduler upon initialization. The strategy of the scheduler is recommended to be implemented within its executeScheduler method. There are no limitations to that, but developers have to take care that the schedulers won't interfere with each other.
 
 
-\section{Scheduler Types}
+\subsection{Scheduler Types}
 \label{sec:scheduler-types}
 In the following section, we will provide detailed explanations of the various scheduler types implemented in our system. Our implementation proposes three different scheduler types, which are designed to target independent goals: The Deadline Scheduler, Idle Scheduler, and Bulk Scheduler.
 
